@@ -60,6 +60,9 @@
     <Filter Include="Source Files\noise\blue_noise">
       <UniqueIdentifier>{8c22b369-0988-4829-b2b5-b1308cedfaca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\webp">
+      <UniqueIdentifier>{6fee0ad4-f4da-477d-bc3d-4f7f210e45dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Layer.h">
@@ -137,6 +140,9 @@
     <ClInclude Include="noise_interface.h">
       <Filter>Source Files\noise</Filter>
     </ClInclude>
+    <ClInclude Include="webp_interface.h">
+      <Filter>Source Files\webp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -186,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="blue_noise_interface.cpp">
       <Filter>Source Files\noise</Filter>
+    </ClCompile>
+    <ClCompile Include="webp_interface.cpp">
+      <Filter>Source Files\webp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

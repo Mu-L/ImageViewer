@@ -17,6 +17,7 @@
 #include "noise_interface.h"
 #include "numpy_interface.h"
 #include "threadsafe_unordered_map.h"
+#include "webp_interface.h"
 
 static std::atomic<int> s_currentID = 1;
 static threadsafe_unordered_map<int, image::IImage> s_resources;
@@ -94,6 +95,10 @@ int image_open(const char* filename)
 		else if(hasEnding(fname, ".npy"))
 		{
 			res = numpy_load(filename);
+		}
+		else if (hasEnding(fname, ".webp"))
+		{
+			res = webp_load(filename);
 		}
 		else
 		{

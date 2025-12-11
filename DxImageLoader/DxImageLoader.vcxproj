@@ -190,6 +190,7 @@
     <ClInclude Include="stbi_interface.h" />
     <ClInclude Include="threadsafe_unordered_map.h" />
     <ClInclude Include="VkFormat.h" />
+    <ClInclude Include="webp_interface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blue_noise_interface.cpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="pfm_interface.cpp" />
     <ClCompile Include="png_interface.cpp" />
     <ClCompile Include="stbi_interface.cpp" />
+    <ClCompile Include="webp_interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dependencies\compressonator\vs2017\cmp_compressonatorlib.vcxproj">
