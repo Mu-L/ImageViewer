@@ -179,4 +179,17 @@ namespace image
 		assert(curEnd + 3 == data);
 		assert(actualEnd + 4 == data);
 	}
+
+	// swaps BGRA format to RGBA format inplace. channelSize is the size of a single pixel component (e.g. red). The image is assumed to have 4 components (RGBA)
+	template<size_t channelSize>
+	inline void swizzleBGRA(uint8_t* data, size_t size)
+	{
+		for (auto end = data + size; data < end; data += 4 * channelSize)
+		{
+			for (size_t j = 0; j < channelSize; ++j) // loop through channel size
+			{
+				std::swap(data[0 + j], data[2 * channelSize + j]);
+			}
+		}
+	}
 }

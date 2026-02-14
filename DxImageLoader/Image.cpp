@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Image.h"
+#include "convert.h"
 #include <algorithm>
 
 size_t image::IImage::calcNumPixels(uint32_t numLayer, uint32_t numLevels, uint32_t width, uint32_t height,
@@ -21,6 +22,20 @@ size_t image::IImage::calcNumPixels(uint32_t numLayer, uint32_t numLevels, uint3
 size_t image::IImage::getNumPixels() const
 {
 	return calcNumPixels(getNumLayers(), getNumMipmaps(), getWidth(0), getHeight(0), getDepth(0));
+}
+
+void image::IImage::applyBGRPostprocess()
+{
+	assert(isSupported(getFormat()));
+	for (uint32_t layer = 0; layer < getNumLayers(); ++layer)
+		for (uint32_t mip = 0; mip < getNumMipmaps(); ++mip)
+		{
+			size_t size;
+			auto data = getData(layer, mip, size);
+			if (getFormat() == gli::FORMAT_RGBA32_SFLOAT_PACK32)
+				image::swizzleBGRA<4>(data, size);
+			else image::swizzleBGRA<1>(data, size);
+		}
 }
 
 image::SimpleImage::SimpleImage(gli::format originalFormat, gli::format internalFormat, uint32_t width, uint32_t height,

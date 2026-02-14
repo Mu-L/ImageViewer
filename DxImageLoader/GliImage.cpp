@@ -77,6 +77,48 @@ bool GliImageBase::requiresGrayscalePostprocess()
 	return is_grayscale(getOriginalFormat());
 }
 
+bool GliImageBase::requiresBGRPostprocess()
+{
+	// compressonator already handles this
+	if (is_compressonator_format(m_base.format())) return false;
+
+	return is_bgr_format(m_original);
+}
+
+bool GliImageBase::is_bgr_format(gli::format f)
+{
+	switch (f)
+	{
+	case gli::format::FORMAT_BGRA4_UNORM_PACK16:
+	case gli::format::FORMAT_B5G6R5_UNORM_PACK16:
+	case gli::format::FORMAT_BGR5A1_UNORM_PACK16:
+	case gli::format::FORMAT_BGR8_UNORM_PACK8:
+	case gli::format::FORMAT_BGR8_SNORM_PACK8:
+	case gli::format::FORMAT_BGR8_USCALED_PACK8:
+	case gli::format::FORMAT_BGR8_SSCALED_PACK8:
+	case gli::format::FORMAT_BGR8_UINT_PACK8:
+	case gli::format::FORMAT_BGR8_SINT_PACK8:
+	case gli::format::FORMAT_BGR8_SRGB_PACK8:
+	case gli::format::FORMAT_BGRA8_UNORM_PACK8:
+	case gli::format::FORMAT_BGRA8_SNORM_PACK8:
+	case gli::format::FORMAT_BGRA8_USCALED_PACK8:
+	case gli::format::FORMAT_BGRA8_SSCALED_PACK8:
+	case gli::format::FORMAT_BGRA8_UINT_PACK8:
+	case gli::format::FORMAT_BGRA8_SINT_PACK8:
+	case gli::format::FORMAT_BGRA8_SRGB_PACK8:
+	case gli::format::FORMAT_BGR10A2_UNORM_PACK32:
+	case gli::format::FORMAT_BGR10A2_SNORM_PACK32:
+	case gli::format::FORMAT_BGR10A2_USCALED_PACK32:
+	case gli::format::FORMAT_BGR10A2_SSCALED_PACK32:
+	case gli::format::FORMAT_BGR10A2_UINT_PACK32:
+	case gli::format::FORMAT_BGR10A2_SINT_PACK32:
+	case gli::format::FORMAT_BGR8_UNORM_PACK32:
+	case gli::format::FORMAT_BGR8_SRGB_PACK32:
+		return true;
+	}
+	return false;
+}
+
 GliImage::GliImage(const gli::texture& tex)
 	: GliImage(tex, tex.format())
 {}

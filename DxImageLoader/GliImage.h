@@ -35,6 +35,10 @@ public:
 	uint32_t getSize() { return uint32_t(m_base.size()); }
 
 	bool requiresGrayscalePostprocess() override;
+	bool requiresBGRPostprocess() override;
+
+	static bool is_bgr_format(gli::format f);
+
 protected:
 	gli::texture& m_base;
 	gli::format m_original;
@@ -52,6 +56,7 @@ public:
 	void saveKtx(const char* filename) const;
 	void saveDds(const char* filename) const;
 	void flip();
+
 private:
 	// helper to choose the correct internal format. This is later required for format conversions
 	gli::texture& initTex(size_t nFaces, gli::extent3d size);

@@ -91,6 +91,11 @@ void ktx2_save_image(const char* filename, GliImage& image, gli::format format, 
 	// convert format if it does not match
 	if(image.getFormat() != format)
 	{
+		if (quality == 100 && GliImageBase::is_bgr_format(format))
+		{
+			if(format != gli::FORMAT_BGRA8_UNORM_PACK8 && format != gli::FORMAT_BGRA8_SNORM_PACK8) // these formats are properly converted for some reason...
+				image.applyBGRPostprocess(); // do BGR swizzle because default converter does not swizzle
+		}
 		auto tmp = image.convert(format, quality);
 		ktx2_save_image(filename, *tmp, format, quality);
 		return;

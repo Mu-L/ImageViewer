@@ -31,6 +31,11 @@ namespace image
 		
 		// if true indicates that the value of the red channel should be written to green and blue as well
 		virtual bool requiresGrayscalePostprocess() { return false; }
+
+		// if true, indicates that B and R needs to be swapped
+		virtual bool requiresBGRPostprocess() { return false; }
+
+		void applyBGRPostprocess();
 	};
 
 	// default interface that supplies internal storage for a single m_layer/mipmap

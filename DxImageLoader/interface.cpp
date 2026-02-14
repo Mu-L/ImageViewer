@@ -125,6 +125,9 @@ int image_open(const char* filename)
 			}
 	}
 
+	if (res->requiresBGRPostprocess())
+		res->applyBGRPostprocess();
+
 	const int id = s_currentID++;
 	s_resources.insert(id, move(res));
 

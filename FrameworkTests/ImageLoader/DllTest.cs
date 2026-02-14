@@ -81,7 +81,7 @@ namespace FrameworkTests.ImageLoader
         }
 
         [TestMethod]
-        public void DDSBGR() // TODO currently failing
+        public void DDSBGR()
         {
             var image = IO.LoadImage(TestData.Directory + "bgr_test.dds");
             Assert.AreEqual(GliFormat.BGRA8_SRGB, image.OriginalFormat);
