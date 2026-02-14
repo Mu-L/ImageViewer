@@ -81,6 +81,22 @@ namespace FrameworkTests.ImageLoader
         }
 
         [TestMethod]
+        public void DDSBGR() // TODO currently failing
+        {
+            var image = IO.LoadImage(TestData.Directory + "bgr_test.dds");
+            Assert.AreEqual(GliFormat.BGRA8_SRGB, image.OriginalFormat);
+            Assert.AreEqual(Format.R8G8B8A8_UNorm_SRgb, image.Format.DxgiFormat);
+
+            var tex = new TextureArray2D(image);
+            var colors = tex.GetPixelColors(LayerMipmapSlice.Mip0);
+            var dim = image.Size;
+            var index = 275 * dim.Width + 214;
+            // reference color picked from the texture
+            var refColor = new Color(0.7386282f, 0.9647822f, 0.6733196f);
+            Assert.IsTrue(colors[index].Equals(refColor, Color.Channel.Rgb, 0.02f));
+        }
+
+        [TestMethod]
         public void LoadDdsCubemap()
         {
             var tex = new TextureArray2D(IO.LoadImage(TestData.Directory + "cubemap.dds"));
