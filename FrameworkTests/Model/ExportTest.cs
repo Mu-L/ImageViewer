@@ -224,7 +224,7 @@ namespace FrameworkTests.Model
         [TestMethod]
         public void ColorTestAllJpg()
         {
-            TryExportAllFormatsAndCompareColor("jpg", true);
+            TryExportAllFormatsAndCompareColor("jpg", true, 99);
         }
 
         [TestMethod]
