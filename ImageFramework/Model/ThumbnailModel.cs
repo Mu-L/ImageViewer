@@ -92,7 +92,7 @@ namespace ImageFramework.Model
 
             var dev = Device.Get();
             ITexture tmpTex = null;
-            if (texture.NumMipmaps < mipmap + 1)
+            if (mipmap > 0) // dont reuse existing mipmaps to account for irradiance textures (too blurry in lower mip levels, see issue 37)
             {
                 // generate new texture with mipmaps
                 tmpTex = texture.CloneWithMipmaps(mipmap + 1);
