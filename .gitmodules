@@ -19,3 +19,6 @@
 [submodule "dependencies/blue_noise"]
 	path = dependencies/blue_noise
 	url = https://github.com/kopaka1822/BlueNoiseGenerator.git
+[submodule "dependencies/libwebp"]
+	path = dependencies/libwebp
+	url = https://github.com/kopaka1822/libwebp.git

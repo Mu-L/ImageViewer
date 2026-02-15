@@ -83,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\dependencies\gli\external;..\dependencies\gli;$(IncludePath)</IncludePath>
+    <IncludePath>..\dependencies\libwebp\src;..\dependencies\gli\external;..\dependencies\gli;$(IncludePath)</IncludePath>
     <LibraryPath>..\dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -161,7 +161,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>ktx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ktx.lib;libsharpyuv.lib;libwebp.lib;libwebpdecoder.lib;libwebpdemux.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
