@@ -73,7 +73,7 @@ namespace ImageViewer.ViewModels.Dialog
             Debug.Assert(selectedMipmap.Cargo == models.Display.ActiveMipmap);
 
             // all layer option for ktx and dds and npy
-            if (models.Images.NumLayers > 1 && (extension == "ktx" || extension == "dds" || extension == "ktx2" || extension == "npy"))
+            if (models.Images.NumLayers > 1 && (extension == "ktx" || extension == "dds" || extension == "ktx2" || extension == "npy" || extension == "webp"))
             {
                 AvailableLayers.Add(new ListItemViewModel<int>
                 {

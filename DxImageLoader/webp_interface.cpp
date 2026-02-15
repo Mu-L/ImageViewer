@@ -4,6 +4,7 @@
 #include <webp/decode.h>
 #include <webp/encode.h>
 #include <webp/demux.h>
+#include <webp/mux.h>
 #include <fstream>
 #include <vector>
 #include <stdexcept>
@@ -152,4 +153,63 @@ private:
 std::unique_ptr<image::IImage> webp_load(const char* filename)
 {
     return std::make_unique<WebpImage>(filename);
+}
+
+std::vector<uint32_t> webp_get_export_formats()
+{
+    return std::vector<uint32_t>{
+        // gli::format::FORMAT_RGB8_SRGB_PACK8,
+		gli::format::FORMAT_RGBA8_SRGB_PACK8, // only this for simplicity
+    };
+}
+
+void webp_save_image(const char* filename, image::IImage& image, gli::format format, int quality)
+{
+	const float fquality = float(quality); // also from 0-100 TODO
+    const uint32_t numLayers = image.getNumLayers();
+    const uint32_t width = image.getWidth(0);
+    const uint32_t height = image.getHeight(0);
+
+    image.applyBGRPostprocess(); // WebP expect BGRA order (argb)
+
+    std::vector<uint8_t> webp_data; // For static image
+
+	int msFrame = 1000 / 24; // default to 24 fps TODO set correctly
+    WebPAnimEncoderOptions enc_opts = {};
+	enc_opts.minimize_size = 1;
+    enc_opts.allow_mixed = 1;
+    enc_opts.kmin = 1;
+	enc_opts.kmax = 2048;
+    auto ret = WebPAnimEncoderOptionsInit(&enc_opts);
+    assert(ret);
+
+    WebPAnimEncoder* enc = WebPAnimEncoderNew(width, height, &enc_opts);
+
+    for (uint32_t layer = 0; layer < image.getNumLayers(); ++layer) 
+    {
+        WebPPicture pic = {};
+        ret = WebPPictureInit(&pic);
+        assert(ret);
+        pic.width = width;
+        pic.height = height;
+        pic.use_argb = 1;
+		size_t dataSize;
+        pic.argb = reinterpret_cast<uint32_t*>(image.getData(layer, 0, dataSize));
+        pic.argb_stride = width;
+
+        // timestamp_ms = cumulative display duration
+        ret = WebPAnimEncoderAdd(enc, &pic, msFrame * int(layer), nullptr);
+        assert(ret);
+        WebPPictureFree(&pic);
+    }
+
+    WebPData out_data;
+    WebPDataInit(&out_data);
+    ret = WebPAnimEncoderAssemble(enc, &out_data);
+    assert(ret);
+    WebPAnimEncoderDelete(enc);
+
+    std::ofstream out(filename, std::ios::binary);
+    out.write(reinterpret_cast<const char*>(out_data.bytes), out_data.size);
+    out.close();
 }

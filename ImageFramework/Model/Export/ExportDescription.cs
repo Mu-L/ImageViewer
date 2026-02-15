@@ -273,6 +273,7 @@ namespace ImageFramework.Model.Export
                     var formats = new List<ExportFormatModel>();
                     formats.Add(new ExportFormatModel("png"));
                     formats.Add(new ExportFormatModel("jpg"));
+                    formats.Add(new ExportFormatModel("webp"));
                     formats.Add(new ExportFormatModel("bmp"));
                     formats.Add(new ExportFormatModel("hdr"));
                     formats.Add(new ExportFormatModel("pfm"));

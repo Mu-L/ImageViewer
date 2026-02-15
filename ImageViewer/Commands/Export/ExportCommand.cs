@@ -176,15 +176,16 @@ namespace ImageViewer.Commands.Export
         public static readonly Dictionary<string, string> Filter = new Dictionary<string, string>
         {
             {"png", "PNG (*.png)" },
-            {"bmp", "BMP (*.bmp)" },
+            {"webp", "WebP (*.webp)" },
+            {"dds", "DirectDraw Surface (*.dds)" },
+            {"ktx2", "Khronos Texture (*.ktx2)"},
+            {"npy", "Python NumPy Array (*.npy)"},
             {"jpg", "JPEG (*.jpg)" },
-            {"tga", "TGA (*.tga)"},
             {"hdr", "HDR (*.hdr)" },
+            {"bmp", "BMP (*.bmp)" },
+            {"tga", "TGA (*.tga)"},
             {"pfm", "Portable float map (*.pfm)" },
             {"ktx", "Khronos Texture (*.ktx)" },
-            {"ktx2", "Khronos Texture (*.ktx2)"},
-            {"dds", "DirectDraw Surface (*.dds)" },
-            {"npy", "Python NumPy Array (*.npy)"}
         };
 
         public static bool Is3DFilter(string key)

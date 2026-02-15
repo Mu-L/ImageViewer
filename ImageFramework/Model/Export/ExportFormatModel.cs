@@ -26,7 +26,9 @@ namespace ImageFramework.Model.Export
         {
             switch (Extension)
             {
-                case "jpg": return true;
+                case "webp":
+                case "jpg": 
+                    return true;
                 case "ktx":
                 case "dds":
                     return format.IsCompressed();
