@@ -165,7 +165,6 @@ std::vector<uint32_t> webp_get_export_formats()
 
 void webp_save_image(const char* filename, image::IImage& image, gli::format format, int quality)
 {
-	const float fquality = float(quality); // also from 0-100 TODO
     const uint32_t numLayers = image.getNumLayers();
     const uint32_t width = image.getWidth(0);
     const uint32_t height = image.getHeight(0);
@@ -183,6 +182,24 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
     auto ret = WebPAnimEncoderOptionsInit(&enc_opts);
     assert(ret);
 
+	WebPConfig config = {};
+	config.lossless = quality >= 100 ? 1 : 0;
+	config.quality = float(quality);
+	config.method = 6; // slowest but best compression
+	config.segments = 4;
+    config.alpha_compression = 1;
+	config.alpha_quality = quality;
+    config.pass = 10;
+    config.near_lossless = config.lossless ? 100 : 0;
+    config.partition_limit = 0; // best quality
+    config.sns_strength = 50; // default
+    config.filter_strength = 60; // default
+    config.filter_sharpness = 0; // default
+    config.alpha_filtering = 1; // default
+    config.exact = 0; // default
+    config.use_sharp_yuv = 0; // default
+    config.qmin = 0; config.qmax = 100;
+
     WebPAnimEncoder* enc = WebPAnimEncoderNew(width, height, &enc_opts);
 
     for (uint32_t layer = 0; layer < image.getNumLayers(); ++layer) 
@@ -196,9 +213,16 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
 		size_t dataSize;
         pic.argb = reinterpret_cast<uint32_t*>(image.getData(layer, 0, dataSize));
         pic.argb_stride = width;
+        std::pair<uint32_t, uint32_t> curLayer = { layer, image.getNumLayers() };
+        pic.user_data = &curLayer;
+		pic.progress_hook = [](int percent, const WebPPicture* pic) -> int {
+            auto curLayer = *reinterpret_cast<std::pair<uint32_t, uint32_t>*>(pic->user_data);
+            set_progress((curLayer.first * 100 + percent) / curLayer.second);
+			return 1; // return false to abort encoding
+		};
 
         // timestamp_ms = cumulative display duration
-        ret = WebPAnimEncoderAdd(enc, &pic, msFrame * int(layer), nullptr);
+        ret = WebPAnimEncoderAdd(enc, &pic, msFrame * int(layer), &config);
         assert(ret);
         WebPPictureFree(&pic);
     }
