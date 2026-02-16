@@ -185,7 +185,7 @@ namespace ImageFramework.Model
         /// <exception cref="Exception"></exception>
         public void AddImageFromFile(string filename)
         {
-            var tex = IO.LoadImageTexture(filename, out var originalFormat);
+            var tex = IO.LoadImageTexture(filename, out var originalFormat, out var fps);
             try
             {
                 Images.AddImage(tex, true, filename, originalFormat);

@@ -14,8 +14,8 @@ namespace ImageFramework.DirectX
         private GCHandle handle;
         private readonly IntPtr ptr;
 
-        public ByteImageData(byte[] data, LayerMipmapCount lm, Size3 size, ImageFormat format)
-        : base(format, lm, size)
+        public ByteImageData(byte[] data, LayerMipmapCount lm, Size3 size, ImageFormat format, float fps = 0.0f)
+        : base(format, lm, size, fps)
         {
             handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             ptr = handle.AddrOfPinnedObject();

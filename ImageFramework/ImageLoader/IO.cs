@@ -65,38 +65,47 @@ namespace ImageFramework.ImageLoader
         /// <summary>
         /// loads image into the correct texture type
         /// </summary>
-        public static ITexture LoadImageTexture(string file, out GliFormat originalFormat)
+        public static ITexture LoadImageTexture(string file, out GliFormat originalFormat, out float fps)
         {
             using (var img = LoadImage(file))
             {
                 originalFormat = img.OriginalFormat;
+                fps = img.Fps;
 
-                if(img.Is3D) return new Texture3D(img);
+                if (img.Is3D) return new Texture3D(img);
                 return new TextureArray2D(img);
             }
         }
 
         /// <inheritdoc cref="LoadImageTexture(string,out ImageFramework.ImageLoader.GliFormat)"/>
+        public static ITexture LoadImageTexture(string file, out GliFormat originalFormat)
+        {
+            return LoadImageTexture(file, out originalFormat, out var dummy);
+        }
+
+        /// <inheritdoc cref="LoadImageTexture(string,out ImageFramework.ImageLoader.GliFormat)"/>
         public static ITexture LoadImageTexture(string file)
         {
-            return LoadImageTexture(file, out var dummy);
+            return LoadImageTexture(file, out var dummy, out var dummy2);
         }
 
         public class TexInfo
         {
             public ITexture Texture { get; set; }
             public GliFormat OriginalFormat { get; set; }
+            public float Fps { get; set; }
         }
 
         public static Task<TexInfo> LoadImageTextureAsync(string file, ProgressModel progress)
         {
             var task = Task.Run(() =>
             {
-                var tex = LoadImageTexture(file, out var orig);
+                var tex = LoadImageTexture(file, out var orig, out var fps);
                 return new TexInfo
                 {
                     Texture = tex,
-                    OriginalFormat = orig
+                    OriginalFormat = orig,
+                    Fps = fps
                 };
             });
 

@@ -99,7 +99,15 @@ namespace ImageViewer.Models
             {
                 var img = await IO.LoadImageTextureAsync(file, models.Progress);
 
+                if (models.Images.NumImages == 0 && img.Fps > 0.0f)
+                {
+                    models.Settings.MovieFps = img.Fps;
+                }
+
                 ImportTexture(img.Texture, true, file, img.OriginalFormat, alias);
+
+                if (models.Settings.MovieFps != img.Fps && img.Fps > 0.0f)
+                    models.Window.ShowInfoDialog($"The FPS count of the imported video ({img.Fps}) does not match the existing FPS count ({models.Settings.MovieFps}). The previous FPS count will be kept.");
 
                 models.Settings.AddRecentFile(file);
             }

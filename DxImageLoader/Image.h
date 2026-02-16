@@ -22,6 +22,7 @@ namespace image
 		virtual gli::format getOriginalFormat() const = 0;
 		virtual uint8_t* getData(uint32_t layer, uint32_t mipmap, size_t& size) = 0;
 		virtual const uint8_t* getData(uint32_t layer, uint32_t mipmap, size_t& size) const = 0;
+		virtual float getFps() const { return 0.0f; } // average fps or 0 if no preference
 
 		// progress helper
 		static size_t calcNumPixels(uint32_t numLayer, uint32_t numLevels, uint32_t width, uint32_t height, uint32_t depth);

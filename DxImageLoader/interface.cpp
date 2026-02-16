@@ -203,6 +203,17 @@ unsigned char* image_get_mipmap(int id, int layer, int mipmap, uint64_t& size)
 	return img->getData(layer, mipmap, size);
 }
 
+float image_get_fps(int id)
+{
+	auto img = s_resources.find(id);
+	if (!img)
+	{
+		set_error("invalid image id");
+		return 0.0f;
+	}
+	return img->getFps();
+}
+
 bool image_save(int id, const char* filename, const char* extension, uint32_t format, int quality)
 {
 	s_last_progress = -1;

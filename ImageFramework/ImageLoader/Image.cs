@@ -19,7 +19,7 @@ namespace ImageFramework.ImageLoader
         public Resource Resource { get; }
 
         public DllImageData(Resource resource, string filename, LayerMipmapCount lm, ImageFormat format, GliFormat originalFormat)
-        : base(format, lm, GetSize(resource))
+        : base(format, lm, GetSize(resource), GetFps(resource))
         {
             Resource = resource;
             Filename = filename;
@@ -30,6 +30,11 @@ namespace ImageFramework.ImageLoader
         {
             Dll.image_info_mipmap(res.Id, 0, out var width, out var height, out var depth);
             return new Size3(width, height, depth);
+        }
+
+        private static float GetFps(Resource res)
+        {
+            return Dll.image_get_fps(res.Id);
         }
 
         public override MipInfo GetMipmap(LayerMipmapSlice lm)

@@ -31,6 +31,9 @@ namespace ImageFramework.ImageLoader
         public static extern IntPtr image_get_mipmap(int id, int layer, int mipmap, out ulong size);
 
         [DllImport(DllFilePath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern float image_get_fps(int id);
+
+        [DllImport(DllFilePath, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool image_save(int id, string filename, string extension, uint format, int quality);
 

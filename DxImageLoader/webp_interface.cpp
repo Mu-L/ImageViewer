@@ -52,11 +52,15 @@ public:
         if (!WebPDemuxGetFrame(demux, 1, &iter))
             throw std::runtime_error("WebPDemuxGetFrame failed");
 
+        size_t totalDurationMs = 0;
+
         do {
             int decodeWidth = 0, decodeHeight = 0;
             uint8_t* decoded = WebPDecodeRGBA(iter.fragment.bytes, iter.fragment.size, &decodeWidth, &decodeHeight);
             if (!decoded)
                 throw std::runtime_error("WebP frame decode failed");
+
+            totalDurationMs += size_t(iter.duration);
 
             // Start with previous frame (or clear for first frame)
             std::vector<uint8_t> frame(prevFrame);
@@ -121,6 +125,9 @@ public:
 
         WebPDemuxReleaseIterator(&iter);
         WebPDemuxDelete(demux);
+
+        if (totalDurationMs > 0)
+            m_fps = (1000.0f * float(m_frameCount)) / float(totalDurationMs);
     }
 
     ~WebpImage() override = default;
@@ -142,12 +149,17 @@ public:
         return m_frames[layer].data();
     }
 
+    virtual float getFps() const override {
+        return m_fps;
+	}
+
 private:
     std::vector<uint8_t> m_buffer;
     std::vector<std::vector<uint8_t>> m_frames;
     uint32_t m_width = 0, m_height = 0, m_frameCount = 0;
     bool m_hasAlpha = false;
     gli::format m_originalFormat = gli::format::FORMAT_RGBA8_SRGB_PACK8;
+    float m_fps = 0.0f;
 };
 
 std::unique_ptr<image::IImage> webp_load(const char* filename)

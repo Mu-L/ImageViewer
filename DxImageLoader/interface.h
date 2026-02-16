@@ -33,6 +33,10 @@ EXPORT(void) image_info_mipmap(int id, int mipmap, int& width, int& height, int&
 /// \return mipmap data. Can also be used to write mipmap data
 EXPORT(unsigned char*) image_get_mipmap(int id, int layer, int mipmap, uint64_t& size);
 
+/// \brief retrieves desired fps for 2D arrays (webp videos)
+/// \return average fps or 0 if no preference is given
+EXPORT(float) image_get_fps(int id);
+
 /// \brief saves the image with the given format and extension
 /// \param id valid image id
 /// \param filename filename without extension

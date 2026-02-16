@@ -17,11 +17,12 @@ namespace ImageFramework.DirectX
             public UInt64 ByteSize;
         }
 
-        protected ImageData(ImageFormat format, LayerMipmapCount layerMipmap, Size3 size)
+        protected ImageData(ImageFormat format, LayerMipmapCount layerMipmap, Size3 size, float fps)
         {
             Format = format;
             LayerMipmap = layerMipmap;
             Size = size;
+            Fps = fps;
         }
 
         public ImageFormat Format { get; }
@@ -31,6 +32,9 @@ namespace ImageFramework.DirectX
         public Size3 Size { get; }
 
         public bool Is3D => Size.Depth > 1;
+
+        // desired FPS for 2D arrays, or 0.0 if no preference
+        public float Fps { get; }
 
         public abstract MipInfo GetMipmap(LayerMipmapSlice lm);
     }
