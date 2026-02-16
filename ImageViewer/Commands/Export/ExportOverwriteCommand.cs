@@ -101,6 +101,7 @@ namespace ImageViewer.Commands.Export
                 var desc = new ExportDescription(tex, path, ext)
                 {
                     Multiplier = multiplier,
+                    Fps = models.Settings.MovieFps,
                 };
                 desc.TrySetFormat(format);
 

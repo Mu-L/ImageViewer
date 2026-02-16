@@ -43,10 +43,11 @@ EXPORT(float) image_get_fps(int id);
 /// \param extension file format extension (without dot)
 /// \param format format that must be compatible with the extension. Can by queried with image_get_export_formats
 /// \param quality quality for compressed formats or .jpg. range: [0, 100]
+/// \param fps video fps (for webp export). 0 defaults to 24 fps. Ignored for non video formats.
 /// \warning the image data might be changed by calling this function. Thus, the image should no longer be used after a call to save
 /// \remarks for pfm and hdr export: the image format must be FORMAT_RGBA32_SFLOAT_PACK32.
 ///          for png, jpg and bmp export the image format must be one of: FORMAT_RGBA8_SRGB_PACK8, FORMAT_RGBA8_UNORM_PACK8, FORMAT_RGBA8_SNORM_PACK8
-EXPORT(bool) image_save(int id, const char* filename, const char* extension, uint32_t format, int quality);
+EXPORT(bool) image_save(int id, const char* filename, const char* extension, uint32_t format, int quality, float fps);
 
 /// \brief retrieves an array with all supported dxgi formats that are available for export with the extension
 EXPORT(const uint32_t*) get_export_formats(const char* extension, int& numFormats);

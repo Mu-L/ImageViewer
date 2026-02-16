@@ -35,7 +35,7 @@ namespace ImageFramework.ImageLoader
 
         [DllImport(DllFilePath, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool image_save(int id, string filename, string extension, uint format, int quality);
+        public static extern bool image_save(int id, string filename, string extension, uint format, int quality, float fps);
 
         [DllImport(DllFilePath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr get_export_formats(string extension, out int nFormats);

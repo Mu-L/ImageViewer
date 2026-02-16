@@ -105,7 +105,7 @@ namespace ImageFramework.Model.Export
             {
                 using (img)
                 {
-                    IO.SaveImage(img, desc.Filename, desc.Extension, desc.FileFormat, desc.Quality);
+                    IO.SaveImage(img, desc.Filename, desc.Extension, desc.FileFormat, desc.Quality, desc.Fps);
                 }
             }, ct);
         }

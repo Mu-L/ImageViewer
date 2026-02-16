@@ -214,7 +214,7 @@ float image_get_fps(int id)
 	return img->getFps();
 }
 
-bool image_save(int id, const char* filename, const char* extension, uint32_t format, int quality)
+bool image_save(int id, const char* filename, const char* extension, uint32_t format, int quality, float fps)
 {
 	s_last_progress = -1;
 	auto img = s_resources.find(id);
@@ -312,7 +312,7 @@ bool image_save(int id, const char* filename, const char* extension, uint32_t fo
 		}
 		else if (ext == "webp")
 		{
-			webp_save_image(fullName.c_str(), *img, gli::format(format), quality);
+			webp_save_image(fullName.c_str(), *img, gli::format(format), quality, fps);
 		}
 		else throw std::runtime_error("file extension not supported");
 	}

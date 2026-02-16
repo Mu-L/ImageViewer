@@ -86,6 +86,8 @@ namespace ImageFramework.Model.Export
         public static int QualityMin = 1;
         public static int QualityMax = 100;
 
+        public float Fps { get; set; } = 0.0f; // for videos
+
         public bool UseCropping { get; set; }
 
         private Float3 cropStartf = Float3.Zero;

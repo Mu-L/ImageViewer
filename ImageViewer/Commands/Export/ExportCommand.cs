@@ -138,7 +138,8 @@ namespace ImageViewer.Commands.Export
                 CropStart = models.ExportConfig.CropStart,
                 CropEnd = models.ExportConfig.CropEnd,
                 Overlay = models.Overlay.Overlay,
-                Quality = models.Settings.LastQuality
+                Quality = models.Settings.LastQuality,
+                Fps = models.Settings.MovieFps,
             };
             desc.TrySetFormat(viewModel.SelectedFormatValue);
 
@@ -161,7 +162,8 @@ namespace ImageViewer.Commands.Export
                         CropEnd = new Float3(box.End, 1.0f),
                         Overlay = viewModel.ZoomBorders ? models.Overlay.Overlay : null,
                         Scale = viewModel.ZoomBoxScale,
-                        Quality = models.Settings.LastQuality
+                        Quality = models.Settings.LastQuality,
+                        Fps = models.Settings.MovieFps,
                     };
                     zdesc.TrySetFormat(viewModel.SelectedFormatValue);
 

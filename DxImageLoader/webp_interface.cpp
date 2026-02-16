@@ -175,7 +175,7 @@ std::vector<uint32_t> webp_get_export_formats()
     };
 }
 
-void webp_save_image(const char* filename, image::IImage& image, gli::format format, int quality)
+void webp_save_image(const char* filename, image::IImage& image, gli::format format, int quality, float fps)
 {
     const uint32_t numLayers = image.getNumLayers();
     const uint32_t width = image.getWidth(0);
@@ -185,7 +185,8 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
 
     std::vector<uint8_t> webp_data; // For static image
 
-	int msFrame = 1000 / 24; // default to 24 fps TODO set correctly
+    if (fps < 0.0f) fps = 24.0f; // default to 24 fps 
+	float msFrame = 1000 / fps;
     WebPAnimEncoderOptions enc_opts = {};
 	enc_opts.minimize_size = 1;
     enc_opts.allow_mixed = 1;
@@ -234,7 +235,7 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
 		};
 
         // timestamp_ms = cumulative display duration
-        ret = WebPAnimEncoderAdd(enc, &pic, msFrame * int(layer), &config);
+        ret = WebPAnimEncoderAdd(enc, &pic, int(msFrame * float(layer)), &config);
         assert(ret);
         WebPPictureFree(&pic);
     }

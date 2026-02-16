@@ -122,9 +122,9 @@ namespace ImageFramework.ImageLoader
             return new DllImageData(res, "tmp", lm, format, format.GliFormat);
         }
 
-        public static void SaveImage(DllImageData image, string filename, string extension, GliFormat format, int quality = 0)
+        public static void SaveImage(DllImageData image, string filename, string extension, GliFormat format, int quality = 0, float fps = 0.0f)
         {
-            if(!Dll.image_save(image.Resource.Id, filename, extension, (uint) format, quality))
+            if(!Dll.image_save(image.Resource.Id, filename, extension, (uint) format, quality, fps))
                 throw new Exception(Dll.GetError());
         }
 
