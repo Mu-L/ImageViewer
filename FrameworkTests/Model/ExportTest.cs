@@ -233,6 +233,12 @@ namespace FrameworkTests.Model
             TryExportAllFormats(TestData.Directory + "small.pfm", ExportDir + "tmp", "png");
         }
 
+        [TestMethod] 
+        public void ExportAllWebp()
+        {
+            TryExportAllFormats(TestData.Directory + "small.pfm", ExportDir + "tmp", "webp");
+        }
+
         [TestMethod]
         public void GrayTestAllPng()
         {
@@ -243,6 +249,12 @@ namespace FrameworkTests.Model
         public void ColorTestAllPng()
         {
             TryExportAllFormatsAndCompareColor("png");
+        }
+
+        [TestMethod]
+        public void ColorTestAllWebp()
+        {
+            TryExportAllFormatsAndCompareColor("webp");
         }
 
         [TestMethod]

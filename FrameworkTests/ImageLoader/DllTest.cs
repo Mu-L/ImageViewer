@@ -51,6 +51,12 @@ namespace FrameworkTests.ImageLoader
         }
 
         [TestMethod]
+        public void Webp()
+        {
+            VerifySmallLdr(IO.LoadImage(TestData.Directory + "small.webp"), Color.Channel.Rgb);
+        }
+
+        [TestMethod]
         public void StbiHdr()
         {
             VerifySmallHdr(IO.LoadImage(TestData.Directory + "small.hdr"), Color.Channel.Rgb);
