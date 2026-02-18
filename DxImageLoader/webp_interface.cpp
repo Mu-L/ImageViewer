@@ -198,11 +198,11 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
 	WebPConfig config = {};
 	config.lossless = quality >= 100 ? 1 : 0;
 	config.quality = float(quality);
-	config.method = 6; // slowest but best compression
+	config.method = 5; // second slowest
 	config.segments = 4;
     config.alpha_compression = 1;
 	config.alpha_quality = quality;
-    config.pass = 10;
+    config.pass = 3;
     config.near_lossless = config.lossless ? 100 : 0;
     config.partition_limit = 0; // best quality
     config.sns_strength = 50; // default
@@ -212,6 +212,7 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
     config.exact = 0; // default
     config.use_sharp_yuv = 0; // default
     config.qmin = 0; config.qmax = 100;
+    config.thread_level = 1;
 
     WebPAnimEncoder* enc = WebPAnimEncoderNew(width, height, &enc_opts);
 
@@ -230,23 +231,39 @@ void webp_save_image(const char* filename, image::IImage& image, gli::format for
         pic.user_data = &curLayer;
 		pic.progress_hook = [](int percent, const WebPPicture* pic) -> int {
             auto curLayer = *reinterpret_cast<std::pair<uint32_t, uint32_t>*>(pic->user_data);
-            set_progress((curLayer.first * 100 + percent) / curLayer.second);
-			return 1; // return false to abort encoding
+            try
+            {
+                set_progress((curLayer.first * 100 + percent) / curLayer.second);
+            }
+            catch (...)
+            {
+                return 0; // abort
+            }
+			return 1;
 		};
 
         // timestamp_ms = cumulative display duration
         ret = WebPAnimEncoderAdd(enc, &pic, int(msFrame * float(layer)), &config);
         assert(ret);
         WebPPictureFree(&pic);
+        if(!ret) break;
     }
 
-    WebPData out_data;
-    WebPDataInit(&out_data);
-    ret = WebPAnimEncoderAssemble(enc, &out_data);
-    assert(ret);
-    WebPAnimEncoderDelete(enc);
+	if (ret) // finalize if all frames were added successfully
+    {
+        // last call to set final timestamp
+        WebPAnimEncoderAdd(enc, nullptr, int(msFrame * float(numLayers)), &config);
 
-    std::ofstream out(filename, std::ios::binary);
-    out.write(reinterpret_cast<const char*>(out_data.bytes), out_data.size);
-    out.close();
+        WebPData out_data;
+        WebPDataInit(&out_data);
+        ret = WebPAnimEncoderAssemble(enc, &out_data);
+        assert(ret);
+
+        std::ofstream out(filename, std::ios::binary);
+        out.write(reinterpret_cast<const char*>(out_data.bytes), out_data.size);
+        out.close();
+    }
+    
+    // cleanup
+    WebPAnimEncoderDelete(enc);
 }
